@@ -19,20 +19,20 @@ export default SplashScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF', // putih
+    backgroundColor: '#FFFFFF',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
-    width: 200, // sesuaikan ukuran logo
+    width: 200,
     height: 200,
     resizeMode: 'contain',
     marginBottom: 20,
   },
   title: {
-    fontFamily: 'Poppins-Medium', // pastikan font Poppins sudah di-install di project
+    fontFamily: 'Poppins-Medium',
     fontSize: 24,
-    color: '#000000', // warna tulisan hitam
+    color: '#000000',
   },
 });
