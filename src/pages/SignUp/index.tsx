@@ -6,12 +6,13 @@ import {
   TouchableOpacity,
   View,
   Text,
+  TextInput,
+  Button,
 } from 'react-native';
-import {NullPhoto} from '../../assets';
-import {Gap} from '../../components/atoms';
-import {TextInput, Button} from '../../components/molecules';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
+import {NullPhoto} from '../../assets';
+import {Gap} from '../../components/atoms'; // Pastikan Gap ada, atau kita hapus sekalian.
 
 const SignUp = ({navigation}) => {
   const [photo, setPhoto] = useState(NullPhoto);
@@ -21,7 +22,6 @@ const SignUp = ({navigation}) => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const onSubmit = () => {
-    // You can add your sign-up logic here
     console.log('Sign Up Data:', {
       name,
       email,
@@ -29,7 +29,7 @@ const SignUp = ({navigation}) => {
       confirmPassword,
       photo,
     });
-    navigation.navigate('SignIn'); // Navigate to Sign In screen after (successful) sign up
+    navigation.navigate('SignIn');
   };
 
   const getImage = async () => {
@@ -48,7 +48,7 @@ const SignUp = ({navigation}) => {
       });
     } else if (result.assets && result.assets.length > 0) {
       const assets = result.assets[0];
-      const base64 = `data:${assets.type};base64, ${assets.base64}`;
+      const base64 = `data:${assets.type};base64,${assets.base64}`;
       const source = {uri: base64};
       setPhoto(source);
     }
@@ -75,14 +75,14 @@ const SignUp = ({navigation}) => {
         </TouchableOpacity>
         <Gap height={30} />
         <TextInput
-          label="Name"
+          style={styles.input}
           placeholder="Type your full name"
           value={name}
           onChangeText={setName}
         />
         <Gap height={16} />
         <TextInput
-          label="Email"
+          style={styles.input}
           placeholder="Type your email address"
           keyboardType="email-address"
           value={email}
@@ -90,7 +90,7 @@ const SignUp = ({navigation}) => {
         />
         <Gap height={16} />
         <TextInput
-          label="Password"
+          style={styles.input}
           placeholder="Type your password"
           secureTextEntry
           value={password}
@@ -98,26 +98,24 @@ const SignUp = ({navigation}) => {
         />
         <Gap height={16} />
         <TextInput
-          label="Confirm Password"
+          style={styles.input}
           placeholder="Confirm your password"
           secureTextEntry
           value={confirmPassword}
           onChangeText={setConfirmPassword}
         />
         <Gap height={24} />
-        <Button label="Create Account" onPress={onSubmit} />
+        <Button title="Create Account" onPress={onSubmit} />
       </View>
     </ScrollView>
   );
 };
 
-export default SignUp;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    paddingTop: 50, // Adjust as needed for status bar
+    paddingTop: 50,
     paddingHorizontal: 24,
   },
   title: {
@@ -161,9 +159,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addPhotoText: {
-    fontFamily: 'Poppins-Medium',
     fontSize: 14,
     color: '#FFFFFF',
     textAlign: 'center',
   },
+  input: {
+    backgroundColor: '#F0F0F0',
+    height: 50,
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: '#000000',
+    marginBottom: 12,
+  },
 });
+
+export default SignUp;

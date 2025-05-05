@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,8 +7,50 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {showMessage} from 'react-native-flash-message'; // Import untuk menampilkan pesan
 
-const SignIn = ({navigation}) => {
+const SignIn = () => {
+  const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false); // Untuk indikator loading
+
+  const handleLogin = async () => {
+    setLoading(true);
+    // Lakukan validasi sederhana di sisi klien
+    if (!email || !password) {
+      showMessage({
+        message: 'Email dan password harus diisi.',
+        type: 'danger',
+      });
+      setLoading(false);
+      return;
+    }
+
+    // Di sini Anda akan menambahkan logika autentikasi dengan backend Anda
+    console.log('Attempting login with:', {email, password});
+
+    // Contoh simulasi login berhasil setelah 2 detik
+    setTimeout(() => {
+      setLoading(false);
+      navigation.navigate('Home'); // Navigasi ke Home jika login berhasil
+      showMessage({
+        message: 'Login berhasil!',
+        type: 'success',
+      });
+    }, 2000);
+
+    // Contoh simulasi login gagal setelah 2 detik
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   showMessage({
+    //     message: 'Login gagal. Periksa email dan password Anda.',
+    //     type: 'danger',
+    //   });
+    // }, 2000);
+  };
+
   return (
     <View style={styles.pageContainer}>
       <Text style={styles.title}>LOG IN</Text>
@@ -19,6 +61,9 @@ const SignIn = ({navigation}) => {
           style={styles.input}
           placeholder="Enter your email"
           placeholderTextColor="#6B7280"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
         />
 
         <Text style={styles.label}>Password</Text>
@@ -27,17 +72,27 @@ const SignIn = ({navigation}) => {
           placeholder="Enter your password"
           placeholderTextColor="#6B7280"
           secureTextEntry
+          value={password}
+          onChangeText={setPassword}
         />
 
         <Pressable
           style={({pressed}) => [
             styles.loginButton,
             pressed && styles.buttonPressed,
-          ]}>
-          <Text style={styles.loginButtonText}>Login</Text>
+          ]}
+          onPress={handleLogin}
+          disabled={loading}>
+          <Text style={styles.loginButtonText}>
+            {loading ? 'Logging in...' : 'Login'}
+          </Text>
         </Pressable>
 
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            // Tambahkan logika navigasi ke halaman lupa kata sandi jika ada
+            console.log('Forgot Password pressed');
+          }}>
           <Text style={styles.forgotPassword}>Forget Password?</Text>
         </TouchableOpacity>
       </View>
@@ -84,8 +139,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 14,
     color: '#000000',
-    elevation: 2, // shadow for android
-    shadowColor: '#000', // shadow for iOS
+    elevation: 2,
+    shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 2,
